@@ -40,15 +40,15 @@ public class UserController {
         return ResponseEntity.status(OK).body(users);
     }
 
-    @PutMapping("/{id}/mail/configuration")
-    public ResponseEntity<?> update(@PathVariable UUID id, ApiUserUpdateRequest request) {
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable UUID id, @RequestBody ApiUserUpdateRequest request) {
         userService.update(id, request);
 
         return ResponseEntity.status(OK).build();
     }
 
     @PutMapping("/{id}/mail/configuration")
-    public ResponseEntity<?> updateMailConfiguration(@PathVariable UUID id, ApiUserMailConfigurationRequest request) {
+    public ResponseEntity<?> updateMailConfiguration(@PathVariable UUID id, @RequestBody ApiUserMailConfigurationRequest request) {
         userService.updateMailConfiguration(id, request);
 
         return ResponseEntity.status(OK).build();

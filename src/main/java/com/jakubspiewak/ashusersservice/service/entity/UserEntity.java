@@ -1,18 +1,24 @@
 package com.jakubspiewak.ashusersservice.service.entity;
 
-import com.jakubspiewak.ashusersservice.service.entity.UserMailConfigurationEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.util.UUID;
 
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.FetchType.LAZY;
+
 @Entity
+@Table(name = "user_table")
 @Data
 @Builder
 @AllArgsConstructor
@@ -21,12 +27,16 @@ public class UserEntity {
 
     @Id
     @GeneratedValue
+    @Column(name = "id")
     private UUID id;
 
+    @Column(name = "login")
     private String login;
 
+    @Column(name = "password")
     private String password;
 
-    @OneToOne(orphanRemoval = true)
+    @OneToOne(orphanRemoval = true, cascade = ALL, fetch = LAZY)
+    @JoinColumn(name = "mail_configuration_id", referencedColumnName = "id")
     private UserMailConfigurationEntity mailConfiguration;
 }

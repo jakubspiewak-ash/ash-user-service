@@ -9,5 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface UserEntityRepository extends JpaRepository<UserEntity, UUID> {
-    List<UserEntity> findAllByMailConfigurationExists();
+    List<UserEntity> findAllByMailConfigurationIsNotNull();
 }

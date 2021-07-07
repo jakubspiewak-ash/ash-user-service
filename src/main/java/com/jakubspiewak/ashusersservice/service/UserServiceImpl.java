@@ -35,7 +35,7 @@ class UserServiceImpl implements UserService {
 
     @Override
     public List<ApiUserGetMailConfigurationResponse> getAllWithConfiguredMail() {
-        final var userEntities = userEntityRepository.findAllByMailConfigurationExists();
+        final var userEntities = userEntityRepository.findAllByMailConfigurationIsNotNull();
         return userEntities.stream()
                 .map(this::mapFromUserEntityToResponse)
                 .collect(toList());
