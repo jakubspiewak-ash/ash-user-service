@@ -4,13 +4,13 @@ eureka:
   client:
     serviceUrl:
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
-#  instance:
-#    preferIpAddress: true
-#    hostname: localhost
+  instance:
+    preferIpAddress: true
+    hostname: localhost
 
 spring:
   application:
-    name: ash-users-service
+    name: ash-user-service
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
@@ -19,7 +19,16 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQL95Dialect
+
+management:
+  endpoints:
+    enabled-by-default: false
+  endpoint:
+    shutdown:
+      enabled: true
+    info:
+      enabled: true

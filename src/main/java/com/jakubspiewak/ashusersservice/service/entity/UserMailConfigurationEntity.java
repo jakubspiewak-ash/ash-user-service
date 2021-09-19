@@ -26,7 +26,7 @@ public class UserMailConfigurationEntity {
     private UUID id;
 
     @Column(name = "mail")
-    private String email;
+    private String address;
 
     @Column(name = "password")
     private String password;
