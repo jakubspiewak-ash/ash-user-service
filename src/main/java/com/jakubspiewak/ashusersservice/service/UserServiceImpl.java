@@ -9,6 +9,7 @@ import com.jakubspiewak.ashapimodellib.model.user.ApiUserUpdateRequest;
 import com.jakubspiewak.ashusersservice.service.entity.UserEntity;
 import com.jakubspiewak.ashusersservice.service.entity.UserMailConfigurationEntity;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import static java.util.stream.Collectors.toList;
 
 // TODO: use mapstruct later
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 class UserServiceImpl implements UserService {
@@ -70,6 +72,18 @@ class UserServiceImpl implements UserService {
 
   @Override
   public UUID getIdByCredentials(UserCredentials credentials) {
+    log.info("==== START ====");
+
+    userEntityRepository.findAll().stream().map(String::valueOf).forEach(log::info);
+
+    log.info("===== END =====");
+
+    log.info(
+        String.valueOf(
+            userEntityRepository
+                .findByLoginAndPassword(credentials.getUsername(), credentials.getPassword())
+                .get()));
+
     return userEntityRepository
         .findByLoginAndPassword(credentials.getUsername(), credentials.getPassword())
         .map(UserEntity::getId)

@@ -5,17 +5,19 @@ import com.jakubspiewak.ashapimodellib.model.user.ApiUserConfigurationRequest;
 import com.jakubspiewak.ashapimodellib.model.user.ApiUserConfigurationResponse;
 import com.jakubspiewak.ashapimodellib.model.user.ApiUserCreateRequest;
 import com.jakubspiewak.ashapimodellib.model.user.ApiUserUpdateRequest;
-import com.jakubspiewak.ashusersservice.service.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
+@Slf4j
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -23,25 +25,22 @@ public class UserController {
 
   private final UserService userService;
 
-  @PostMapping
+  // TODO: remove "/register" after gateway security improvement
+  @PostMapping("/register")
   public ResponseEntity<UUID> add(@RequestBody ApiUserCreateRequest request) {
     final var id = userService.create(request);
 
     return ResponseEntity.status(CREATED).body(id);
   }
 
-  // TODO: rid of weird usage of returning entity itself in controller
-  @GetMapping
-  public ResponseEntity<List<UserEntity>> readAll() {
-    final var users = userService.readAll();
+  @PostMapping("/id")
+  public ResponseEntity<UUID> findByCredentials(@RequestBody UserCredentials credentials, @RequestHeader Map<String, String> headers) {
 
-    return ResponseEntity.status(OK).body(users);
-  }
+    log.info("XXX === XXX === XXX");
+    headers.forEach((s, s2) -> log.info("{}: {}", s.toUpperCase(), s2));
+    log.info("XXX === XXX === XXX");
 
-  @PostMapping("/credentials")
-  public ResponseEntity<UUID> findByCredentials(@RequestBody UserCredentials credentials) {
     final var id = userService.getIdByCredentials(credentials);
-
     return ResponseEntity.status(OK).body(id);
   }
 
