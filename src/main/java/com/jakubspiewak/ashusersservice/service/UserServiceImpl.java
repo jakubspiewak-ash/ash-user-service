@@ -72,18 +72,6 @@ class UserServiceImpl implements UserService {
 
   @Override
   public UUID getIdByCredentials(UserCredentials credentials) {
-    log.info("==== START ====");
-
-    userEntityRepository.findAll().stream().map(String::valueOf).forEach(log::info);
-
-    log.info("===== END =====");
-
-    log.info(
-        String.valueOf(
-            userEntityRepository
-                .findByLoginAndPassword(credentials.getUsername(), credentials.getPassword())
-                .get()));
-
     return userEntityRepository
         .findByLoginAndPassword(credentials.getUsername(), credentials.getPassword())
         .map(UserEntity::getId)
