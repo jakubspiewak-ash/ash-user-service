@@ -1,6 +1,6 @@
 package com.jakubspiewak.ashusersservice.service;
 
-import com.jakubspiewak.ashapimodellib.model.auth.UserCredentials;
+import com.jakubspiewak.ashapimodellib.model.auth.ApiUserCredentials;
 import com.jakubspiewak.ashapimodellib.model.mail.MailConfiguration;
 import com.jakubspiewak.ashapimodellib.model.user.ApiUserConfigurationRequest;
 import com.jakubspiewak.ashapimodellib.model.user.ApiUserConfigurationResponse;
@@ -71,7 +71,7 @@ class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UUID getIdByCredentials(UserCredentials credentials) {
+  public UUID getIdByCredentials(ApiUserCredentials credentials) {
     return userEntityRepository
         .findByLoginAndPassword(credentials.getUsername(), credentials.getPassword())
         .map(UserEntity::getId)

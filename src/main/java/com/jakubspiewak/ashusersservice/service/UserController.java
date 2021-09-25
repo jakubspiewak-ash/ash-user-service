@@ -1,6 +1,6 @@
 package com.jakubspiewak.ashusersservice.service;
 
-import com.jakubspiewak.ashapimodellib.model.auth.UserCredentials;
+import com.jakubspiewak.ashapimodellib.model.auth.ApiUserCredentials;
 import com.jakubspiewak.ashapimodellib.model.user.ApiUserConfigurationRequest;
 import com.jakubspiewak.ashapimodellib.model.user.ApiUserConfigurationResponse;
 import com.jakubspiewak.ashapimodellib.model.user.ApiUserCreateRequest;
@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -34,12 +33,7 @@ public class UserController {
   }
 
   @PostMapping("/id")
-  public ResponseEntity<UUID> findByCredentials(@RequestBody UserCredentials credentials, @RequestHeader Map<String, String> headers) {
-
-    log.info("XXX === XXX === XXX");
-    headers.forEach((s, s2) -> log.info("{}: {}", s.toUpperCase(), s2));
-    log.info("XXX === XXX === XXX");
-
+  public ResponseEntity<UUID> findByCredentials(@RequestBody ApiUserCredentials credentials) {
     final var id = userService.getIdByCredentials(credentials);
     return ResponseEntity.status(OK).body(id);
   }

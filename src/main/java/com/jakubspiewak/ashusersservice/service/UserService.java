@@ -1,6 +1,6 @@
 package com.jakubspiewak.ashusersservice.service;
 
-import com.jakubspiewak.ashapimodellib.model.auth.UserCredentials;
+import com.jakubspiewak.ashapimodellib.model.auth.ApiUserCredentials;
 import com.jakubspiewak.ashapimodellib.model.user.ApiUserConfigurationRequest;
 import com.jakubspiewak.ashapimodellib.model.user.ApiUserConfigurationResponse;
 import com.jakubspiewak.ashapimodellib.model.user.ApiUserCreateRequest;
@@ -24,5 +24,5 @@ interface UserService {
 
     void delete(UUID id);
 
-    UUID getIdByCredentials(UserCredentials credentials);
+    UUID getIdByCredentials(ApiUserCredentials credentials);
 }
