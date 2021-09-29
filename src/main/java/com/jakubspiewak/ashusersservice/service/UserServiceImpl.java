@@ -25,23 +25,18 @@ import static java.util.stream.Collectors.toList;
 class UserServiceImpl implements UserService {
 
   private final UserEntityRepository userEntityRepository;
+  private final TenantService tenantService;
 
   @Override
   public UUID create(ApiUserCreateRequest request) {
-    // TODO: change that shit later
-
-    //    final var entity =
-    //
-    // UserEntity.builder().login(request.getLogin()).password(request.getPassword()).build();
-
     final var entity =
-        userEntityRepository.findAll().stream()
-            .findFirst()
-            .orElseGet(() -> UserEntity.builder().build());
+        UserEntity.builder().login(request.getLogin()).password(request.getPassword()).build();
 
-    entity.setLogin(request.getLogin());
-    entity.setPassword(request.getPassword());
-    return userEntityRepository.save(entity).getId();
+    final var userId = userEntityRepository.save(entity).getId();
+
+    tenantService.initSchema(userId);
+
+    return userId;
   }
 
   @Override
@@ -65,8 +60,10 @@ class UserServiceImpl implements UserService {
     userEntityRepository.save(entity);
   }
 
+  // TODO: delete database schema as well
   @Override
   public void delete(UUID id) {
+    tenantService.deleteSchema(id);
     userEntityRepository.deleteById(id);
   }
 
@@ -80,15 +77,15 @@ class UserServiceImpl implements UserService {
 
   @Override
   public void updateMailConfiguration(UUID id, ApiUserConfigurationRequest request) {
-    //    final var entity = userEntityRepository.findById(id).orElseThrow();
-    final var entity = userEntityRepository.findAll().stream().findAny().orElseThrow();
+    final var entity = userEntityRepository.findById(id).orElseThrow();
+
     final var mailConfiguration = request.getMail();
 
     final var entityConfiguration =
         UserMailConfigurationEntity.builder()
             .host(mailConfiguration.getHost())
             .port(mailConfiguration.getPort())
-            .address(mailConfiguration.getAddress())
+            .mailAddress(mailConfiguration.getAddress())
             .password(mailConfiguration.getPassword())
             .build();
 
@@ -101,7 +98,7 @@ class UserServiceImpl implements UserService {
     final var entityMailConfiguration = userEntity.getMailConfiguration();
     final var responseMailConfiguration =
         MailConfiguration.builder()
-            .address(entityMailConfiguration.getAddress())
+            .address(entityMailConfiguration.getMailAddress())
             .password(entityMailConfiguration.getPassword())
             .port(entityMailConfiguration.getPort())
             .host(entityMailConfiguration.getHost())

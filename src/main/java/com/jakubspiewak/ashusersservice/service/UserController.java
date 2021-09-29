@@ -16,6 +16,7 @@ import java.util.UUID;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
+// TODO: when it isn't in separate schema improve security
 @Slf4j
 @RestController
 @RequestMapping("/user")

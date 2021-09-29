@@ -5,13 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.UUID;
 
 import static javax.persistence.CascadeType.ALL;
@@ -25,18 +19,18 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor
 public class UserEntity {
 
-    @Id
-    @GeneratedValue
-    @Column(name = "id")
-    private UUID id;
+  @Id
+  @GeneratedValue
+  @Column(name = "id")
+  private UUID id;
 
-    @Column(name = "login")
-    private String login;
+  @Column(name = "login")
+  private String login;
 
-    @Column(name = "password")
-    private String password;
+  @Column(name = "password")
+  private String password;
 
-    @OneToOne(orphanRemoval = true, cascade = ALL, fetch = LAZY)
-    @JoinColumn(name = "mail_configuration_id", referencedColumnName = "id")
-    private UserMailConfigurationEntity mailConfiguration;
+  @OneToOne(orphanRemoval = true, cascade = ALL, fetch = LAZY)
+  @JoinColumn(name = "mail_configuration_id", referencedColumnName = "id")
+  private UserMailConfigurationEntity mailConfiguration;
 }

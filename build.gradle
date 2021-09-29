@@ -44,8 +44,12 @@ dependencies {
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-    // postgres
+    // postgres && hibernate
+    implementation 'org.hibernate:hibernate-core:5.5.7.Final'
     implementation 'org.postgresql:postgresql'
+
+    // flyway
+    implementation 'org.flywaydb:flyway-core:7.15.0'
 
     // lombok
     compileOnly 'org.projectlombok:lombok'
