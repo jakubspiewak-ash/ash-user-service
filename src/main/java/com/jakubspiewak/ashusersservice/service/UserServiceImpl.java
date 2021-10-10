@@ -7,7 +7,7 @@ import com.jakubspiewak.ashapimodellib.model.user.ApiUserConfigurationResponse;
 import com.jakubspiewak.ashapimodellib.model.user.ApiUserCreateRequest;
 import com.jakubspiewak.ashapimodellib.model.user.ApiUserUpdateRequest;
 import com.jakubspiewak.ashusersservice.service.entity.UserEntity;
-import com.jakubspiewak.ashusersservice.service.entity.UserMailConfigurationEntity;
+import com.jakubspiewak.ashusersservice.service.entity.UserMailConfigEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -46,7 +46,7 @@ class UserServiceImpl implements UserService {
 
   @Override
   public List<ApiUserConfigurationResponse> getAllWithConfiguredMail() {
-    final var userEntities = userEntityRepository.findAllByMailConfigurationIsNotNull();
+    final var userEntities = userEntityRepository.findAllByMailConfigIsNotNull();
 
     return userEntities.stream().map(this::mapFromUserEntityToResponse).collect(toList());
   }
@@ -70,7 +70,7 @@ class UserServiceImpl implements UserService {
   @Override
   public UUID getIdByCredentials(ApiUserCredentials credentials) {
     return userEntityRepository
-        .findByLoginAndPassword(credentials.getUsername(), credentials.getPassword())
+        .findByLoginAndPassword(credentials.getLogin(), credentials.getPassword())
         .map(UserEntity::getId)
         .orElseThrow();
   }
@@ -82,20 +82,20 @@ class UserServiceImpl implements UserService {
     final var mailConfiguration = request.getMail();
 
     final var entityConfiguration =
-        UserMailConfigurationEntity.builder()
+        UserMailConfigEntity.builder()
             .host(mailConfiguration.getHost())
             .port(mailConfiguration.getPort())
             .mailAddress(mailConfiguration.getAddress())
             .password(mailConfiguration.getPassword())
             .build();
 
-    entity.setMailConfiguration(entityConfiguration);
+    entity.setMailConfig(entityConfiguration);
 
     userEntityRepository.save(entity);
   }
 
   private ApiUserConfigurationResponse mapFromUserEntityToResponse(UserEntity userEntity) {
-    final var entityMailConfiguration = userEntity.getMailConfiguration();
+    final var entityMailConfiguration = userEntity.getMailConfig();
     final var responseMailConfiguration =
         MailConfiguration.builder()
             .address(entityMailConfiguration.getMailAddress())

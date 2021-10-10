@@ -1,7 +1,4 @@
--- RID OF THIS AND USE IN HIBERNATE
--- CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
-CREATE TABLE user_mail_configuration_table
+CREATE TABLE user_mail_config_table
 (
     id           uuid    NOT NULL,
     mail_address varchar NOT NULL,
@@ -13,11 +10,10 @@ CREATE TABLE user_mail_configuration_table
 
 CREATE TABLE user_table
 (
-    id                    uuid    NOT NULL,
-    login                 varchar NOT NULL,
-    password              varchar NOT NULL,
-    mail_configuration_id uuid,
+    id             uuid    NOT NULL,
+    login          varchar NOT NULL,
+    password       varchar NOT NULL,
+    mail_config_id uuid,
     PRIMARY KEY (id),
-    CONSTRAINT fk_user_mail_configuration
-        FOREIGN KEY (mail_configuration_id) REFERENCES user_mail_configuration_table (id)
+    CONSTRAINT fk_user_mail_config FOREIGN KEY (mail_config_id) REFERENCES user_mail_config_table (id)
 );

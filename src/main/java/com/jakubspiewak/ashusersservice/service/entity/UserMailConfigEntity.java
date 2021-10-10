@@ -7,40 +7,38 @@ import javax.persistence.*;
 import java.util.Objects;
 import java.util.UUID;
 
-import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.FetchType.LAZY;
-
 @Entity
-@Table(name = "user_table")
+@Table(name = "user_mail_config_table")
 @Getter
 @Setter
 @ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserEntity {
+public class UserMailConfigEntity {
 
     @Id
     @GeneratedValue
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "login")
-    private String login;
+    @Column(name = "mail_address")
+    private String mailAddress;
 
     @Column(name = "password")
     private String password;
 
-    @OneToOne(orphanRemoval = true, cascade = ALL, fetch = LAZY)
-    @JoinColumn(name = "mail_config_id", referencedColumnName = "id")
-    @ToString.Exclude
-    private UserMailConfigEntity mailConfig;
+    @Column(name = "host")
+    private String host;
+
+    @Column(name = "port")
+    private Integer port;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        UserEntity that = (UserEntity) o;
+        UserMailConfigEntity that = (UserMailConfigEntity) o;
         return id != null && Objects.equals(id, that.id);
     }
 
