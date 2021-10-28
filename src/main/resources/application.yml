@@ -12,13 +12,12 @@ spring:
   application:
     name: ash-user-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://${JDBC_URI:localhost:5432/postgres}
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: true
-
     hibernate:
       ddl-auto: validate
     properties:
